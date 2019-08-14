@@ -12,7 +12,7 @@
             </div>
             <weather-detail :weather-data="weather"></weather-detail>
             <transition name="widget-city-list">
-                <city-list v-if="showList" @loadWeather="loadWeather"></city-list>
+                <city-list v-if="showList" @showSelectedCity="showSelectedCity"></city-list>
             </transition>
         </div>
     </div>
@@ -58,8 +58,8 @@ export default {
                 this.getClientGeo()
             }
         },
-        loadWeather(cityName){
-            this.getWeatherByCityName(cityName);
+        showSelectedCity(city){
+            this.weather = city;
             this.showList = false
         },
     },

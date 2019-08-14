@@ -2,7 +2,7 @@
     <div v-if="weatherData" class="weather-detail">
         <div class="layout">
             <div class="weather-detail__description">
-                <span class="weather-detail__description--city-name">{{ weatherData.name }}</span>
+                <span class="weather-detail__description--city-name">{{ weatherData.name }}, {{weatherData.sys.country}}</span>
                 <span class="weather-detail__description--type">{{ weatherData.weather[0].main }}</span>
             </div>
             <temperature :city-temp="weatherData.main"></temperature>

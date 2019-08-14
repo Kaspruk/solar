@@ -10,7 +10,7 @@
             </div>
             <div class="layout" :class="weatherType">
                 <div class="city-list-item__description">
-                    <span class="city-list-item__description--city-name">{{ weather.name }}</span>
+                    <span class="city-list-item__description--city-name">{{ weather.name }}, {{ weather.sys.country }}</span>
                     <span class="city-list-item__description--type">{{ weather.weather[0].main }}</span>
                 </div>
                 <div class="city-list-item__icon">

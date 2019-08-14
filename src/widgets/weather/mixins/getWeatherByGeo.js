@@ -19,21 +19,21 @@ export default{
 
             try {
                 data = await api.weather.getWeatherByGeo(position.coords.latitude, position.coords.longitude);
-                this.saveInLS(data.name);
+                this.saveInLS(data.name, data.sys.country);
             }
             catch (e) { data = this.getErrorData() }
 
             this.geoWeather = data
 
         },
-        saveInLS(cityName) {
+        saveInLS(cityName, country) {
             const updateStorage = this.getLSData();
-            updateStorage.currentCity = cityName;
-            updateStorage.selectedCity = cityName;
+            updateStorage.currentCity = `${cityName}, ${country}`;
+            updateStorage.selectedCity = `${cityName}, ${country}`;
             const cityItems = updateStorage.cities ? updateStorage.cities : [];
             const checkSimilarCity = cityItems.filter(city => city === cityName);
             if (!checkSimilarCity.length) {
-                cityItems.unshift(cityName);
+                cityItems.unshift(`${cityName}, ${country}`);
             }
             updateStorage.cities = cityItems;
             this.setLSData(updateStorage);

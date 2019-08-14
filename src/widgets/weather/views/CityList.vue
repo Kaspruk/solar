@@ -3,7 +3,7 @@
         <div class="layout justify-center">
             <div class="city-list--search">
                 <v-field label="Find city" v-model="value" @enter="addCity()"></v-field>
-                <div class="btn" @click="addCity()"><span class="btn__content">Add</span></div>
+                <div class="btn" @click="addCity()" :class="{'disabled': !value.length}"><span class="btn__content">Add</span></div>
             </div>
         </div>
         <div class="city-list-wrapper">
@@ -20,8 +20,8 @@
                     v-for="city in cityWithWeather"
                     :currentCity="!!(currentCity === city.name)"
                     :weather="city"
-                    @selectCity="selectCity(city.name)"
-                    @remove="removeItem(city.name)"
+                    @selectCity="selectCity(city)"
+                    @remove="removeItem(`${city.name}, ${city.sys.country}`)"
                     :key="city.id">
                 </city-list-item>
             </transition-group>
@@ -53,18 +53,14 @@ export default {
     computed: {
         currentCity() {
             const ls = this.getLSData();
-            return (ls && ls.currentCity) ? ls.currentCity : '';
+            return (ls && ls.currentCity) ? ls.currentCity.split(',')[0] : '';
         }
     },
     methods: {
         addCity() {
             const checkSimilarCity = this.cities.filter(city => city === this.value);
             if (!checkSimilarCity.length) {
-                this.cities.unshift(this.value);
-                this.getWeatherByCityName(this.cities[0]);
-                const ls = this.getLSData();
-                ls.cities = this.cities;
-                this.setLSData(ls)
+                this.getWeatherByCityName(this.value);
             }
             this.value = ''
         },
@@ -88,13 +84,19 @@ export default {
                         ls.cities = this.cities;
                         this.setLSData(ls)
                     }, 3500)
-                } else this.cityWithWeather.unshift(res)
+                } else {
+                    this.cities.unshift(`${res.name}, ${res.sys.country}`);
+                    const ls = this.getLSData();
+                    ls.cities = this.cities;
+                    this.setLSData(ls);
+                    this.cityWithWeather.unshift(res)
+                }
             })
         },
-        selectCity(name){
-            this.$emit('loadWeather', name);
+        selectCity(city){
+            this.$emit('showSelectedCity', city);
             const obj = this.getLSData();
-            obj.selectedCity = name;
+            obj.selectedCity = `${city.name}, ${city.sys.country}`;
             this.setLSData(obj)
         },
         removeItem(name) {
