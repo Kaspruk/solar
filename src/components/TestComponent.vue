@@ -7,10 +7,7 @@
 <script>
 import WeatherWidget from './../widgets/weather/WeatherWidget'
 export default {
-  name: 'HelloWorld',
-  components: { WeatherWidget },
-  props: {
-    msg: String
-  }
+  name: 'TestComponent',
+  components: { WeatherWidget }
 }
 </script>
