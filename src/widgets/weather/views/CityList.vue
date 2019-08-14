@@ -1,0 +1,119 @@
+<template>
+    <div class="city-list">
+        <div class="layout justify-center">
+            <div class="city-list--search">
+                <v-field label="Find city" v-model="value" @enter="addCity()"></v-field>
+                <div class="btn" @click="addCity()"><span class="btn__content">Add</span></div>
+            </div>
+        </div>
+        <div class="city-list-wrapper">
+            <div v-if="!cityWithWeather.length && !loading" class="layout justify-center city-list-wrapper--empty">
+                Add more cities
+            </div>
+            <transition-group v-else name="move-list" tag="div" class="layout wrap city-list-wrapper--scroll">
+                <city-list-item
+                    v-if="errorMsg"
+                    :errorMsg="errorMsg"
+                    :key="1">
+                </city-list-item>
+                <city-list-item
+                    v-for="city in cityWithWeather"
+                    :currentCity="!!(currentCity === city.name)"
+                    :weather="city"
+                    @selectCity="selectCity(city.name)"
+                    @remove="removeItem(city.name)"
+                    :key="city.id">
+                </city-list-item>
+            </transition-group>
+        </div>
+    </div>
+</template>
+
+<script>
+import api from './../common/api/index.js'
+
+import lsHelper from './../mixins/lsHelper'
+
+import VField from '../components/VField'
+import CityListItem from '../components/CityListItem'
+
+export default {
+    name: "CityList",
+    components: { VField, CityListItem },
+    mixins: [ lsHelper ],
+    data() {
+        return {
+            value: '',
+            cities: [],
+            cityWithWeather: [],
+            errorMsg: '',
+            loading: false
+        }
+    },
+    computed: {
+        currentCity() {
+            const ls = this.getLSData();
+            return (ls && ls.currentCity) ? ls.currentCity : '';
+        }
+    },
+    methods: {
+        addCity() {
+            const checkSimilarCity = this.cities.filter(city => city === this.value);
+            if (!checkSimilarCity.length) {
+                this.cities.unshift(this.value);
+                this.getWeatherByCityName(this.cities[0]);
+                const ls = this.getLSData();
+                ls.cities = this.cities;
+                this.setLSData(ls)
+            }
+            this.value = ''
+        },
+        getWeatherInCities(city) {
+            this.loading = true;
+            const arr = [];
+            city.forEach(c => arr.push(api.weather.getWeatherByCityName(c)));
+            Promise.all(arr).then((res) => {
+                this.cityWithWeather = res;
+                this.loading = false;
+            });
+        },
+        getWeatherByCityName(city) {
+            api.weather.getWeatherByCityName(city).then((res) => {
+                if(res.cod === "400" || res.cod === "404") {
+                    this.errorMsg = res.message;
+                    setTimeout(() => {
+                        this.errorMsg = '';
+                        this.cities.shift();
+                        const ls = this.getLSData();
+                        ls.cities = this.cities;
+                        this.setLSData(ls)
+                    }, 3500)
+                } else this.cityWithWeather.unshift(res)
+            })
+        },
+        selectCity(name){
+            this.$emit('loadWeather', name);
+            const obj = this.getLSData();
+            obj.selectedCity = name;
+            this.setLSData(obj)
+        },
+        removeItem(name) {
+            const ind = this.cities.indexOf(name);
+            const obj = this.getLSData();
+            this.cities.splice(ind, 1);
+            this.cityWithWeather.splice(ind, 1);
+            obj.cities = this.cities;
+            this.setLSData(obj)
+        },
+    },
+    created() {
+        const savedCities = this.getLSData() ? this.getLSData().cities : [];
+        this.cities = [...savedCities];
+        if(this.cities.length) this.getWeatherInCities(this.cities)
+    }
+}
+</script>
+
+<style scoped>
+
+</style>

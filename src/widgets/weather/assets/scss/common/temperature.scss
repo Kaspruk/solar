@@ -1,0 +1,40 @@
+.temperature{
+  display: flex;
+  align-items: center;
+  &>span {
+    font-size: 7rem;
+    line-height: 80%;
+    font-weight: 300;
+    display: block;
+  }
+  div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-left: 5px;
+    &>i{
+      font-size: 2rem;
+      line-height: 80%;
+      font-weight: 300;
+      cursor: pointer;
+      user-select: none;
+      font-style: normal;
+      transition: color $transition;
+      margin-bottom: 5px;
+      &:hover{
+        color: lighten($day, 10%)
+      }
+    }
+    span{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+      i{
+        width: 15px;
+        height: 25px;
+      }
+    }
+  }
+}

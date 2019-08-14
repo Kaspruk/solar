@@ -1,0 +1,79 @@
+.city-list-item{
+  width: 100%;
+  height: 150px;
+  pointer-events: all;
+  &__wrapper{
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    display: flex;
+    flex-direction: column;
+    pointer-events: all;
+    &.day{
+      background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('./assets/images/day.jpg');
+    }
+    &.night{
+      background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('./assets/images/night.jpg');
+    }
+  }
+  &__remove{
+    display: flex;
+    padding: 5px 5px 0 0;
+    flex-grow: 1;
+    .icon{
+      width: 20px;
+      height: 20px;
+      visibility: hidden;
+    }
+    .close{
+      visibility: visible;
+    }
+  }
+  .layout{
+    flex-grow: 2;
+    height: 100%;
+    align-items: center;
+    padding: 10px;
+    &>div{
+      width: 33.33%;
+    }
+  }
+  &__description{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    &--city-name{
+      font-size: 2.5rem;
+      text-align: left;
+    }
+    &--type{
+      font-size: 1rem;
+      text-align: left;
+    }
+  }
+  &__icon{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .icon{
+      width: 60%;
+      height: 60%;
+    }
+  }
+  .temperature{
+    justify-content: flex-end;
+  }
+  &__error{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $night;
+    color: #ffffff;
+    font-size: 2rem;
+    text-transform: capitalize;
+  }
+}

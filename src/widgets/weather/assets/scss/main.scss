@@ -1,0 +1,79 @@
+$day: #6CB9C8;
+$night: #484F60;
+$transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+@import "common/grid";
+@import "common/icons";
+@import "common/buttons";
+@import "common/field";
+
+
+.weather-widget{
+  height: 100vh;
+  width: 100vw;
+  padding: 20px 10px;
+  font-family: "Roboto", sans-serif;
+  color: #ffffff;
+  &__header{
+    padding: 10px 15px;
+    height: 60px;
+    position: relative;
+    z-index: 4;
+  }
+  .weather-card{
+    background-color: rgba(0,0,0, .3);
+    position: relative;
+    height: 100%;
+    box-shadow: 0 10px 13px -6px rgba(0, 0, 0, 0.2), 0 20px 31px 3px rgba(0, 0, 0, 0.14), 0 8px 38px 7px rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: background-color $transition;
+    .weather-detail {
+      z-index: 2;
+      position: relative;
+    }
+    &:before{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: bottom;
+      background-repeat: no-repeat;
+      transition: all $transition;
+      z-index: 1;
+    }
+  }
+}
+
+
+.weather-widget.day{
+  background-color: $day;
+  .weather-card{
+    background-color: $day;
+    &:before{
+      background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('./assets/images/day.jpg') ;
+    }
+  }
+}
+
+.weather-widget.night{
+  background-color: $night;
+  .weather-card{
+    background-color: $night;
+    &:before{
+      background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('./assets/images/night.jpg') ;
+    }
+  }
+}
+
+// Components
+@import "common/temperature";
+@import "common/cityListItem";
+
+// Views
+@import "views/weatherDetail";
+@import "views/cityList";
+

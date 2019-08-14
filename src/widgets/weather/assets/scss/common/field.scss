@@ -1,0 +1,68 @@
+.v-field {
+  width: 100%;
+  min-width: 100px;
+  padding-top: 12px;
+  &_slot-input{
+    cursor: text;
+    position: relative;
+    &:before,
+    &:after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      border-style: solid;
+    }
+    &:before{
+      border-color: #ffffff;
+      border-width: thin 0 0 0;
+    }
+    &:after{
+      transition: $transition;
+      border-color: $day;
+      border-width: thin 0 thin 0;
+      transform: scaleX(0);
+    }
+  }
+  &--label{
+    position: absolute;
+    top: 8px;
+    height: 20px;
+    line-height: 20px;
+    transform-origin: top left;
+    transition: $transition;
+    color: #ffffff;
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+    &-active{
+      transform: translateY(-18px) scale(0.75);
+    }
+  }
+  &--input{
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    border: none;
+    background-color: transparent;
+    flex: 1 1 auto;
+    line-height: 20px;
+    padding: 8px 0 8px;
+    color: #ffffff;
+    curret-color: #ffffff;
+  }
+
+  &--focused{
+    .v-field_slot-input{
+      &:after{
+        transform: scaleX(1);
+      }
+    }
+    .v-field--label{
+      color: $day;
+    }
+  }
+}
