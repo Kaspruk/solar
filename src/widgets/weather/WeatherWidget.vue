@@ -68,7 +68,6 @@ export default {
     },
     watch: {
         geoWeather(val) {
-            console.log(val);
             this.weather = val;
         }
     }

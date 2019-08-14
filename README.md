@@ -1,4 +1,4 @@
-# my-app
+# Solar
 
 ## Project setup
 ```
