@@ -109,8 +109,12 @@ export default {
         },
     },
     created() {
-        const savedCities = this.getLSData() ? this.getLSData().cities : [];
-        this.cities = [...savedCities];
+        const savedCities = this.getLSData();
+        if (savedCities && savedCities.cities) {
+            this.cities = [...savedCities.cities]
+        } else {
+            this.cities = []
+        }
         if(this.cities.length) this.getWeatherInCities(this.cities)
     }
 }
